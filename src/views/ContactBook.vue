@@ -28,14 +28,18 @@
                     Chi tiết Liên hệ
                     <i class="fas fa-address-card"></i>
                 </h4>
-                <ContactCard :contact="activeContact" />
+                <!-- Chỉnh sửa liên hệ -->
+                <ContactCard :contact="activeContact" @delete:contact="deleteContact" />
                 <router-link :to="{
                     name: 'contact.edit',
                     params: { id: activeContact._id },
                 }">
-                    <span class="mt-2 badge badge-warning">
-                        <i class="fas fa-edit"></i> Hiệu chỉnh</span>
+                <button class="btn btn-primary"><i class="fas fa-edit"></i> Chỉnh sửa</button>
                 </router-link>
+                <!-- create contact deletion function? -->
+                <button v-if="activeContact._id" type="button" class="ml-2 btn btn-danger" @click="deleteContact">
+                    Xóa
+                </button>
             </div>
         </div>
     </div>
@@ -44,12 +48,14 @@
 import ContactCard from "@/components/ContactCard.vue";
 import InputSearch from "@/components/InputSearch.vue";
 import ContactList from "@/components/ContactList.vue";
+import ChatForm from "@/components/ChatForm.vue";
 import ContactService from "@/services/contact.service";
 export default {
     components: {
         ContactCard,
         InputSearch,
         ContactList,
+        ChatForm,
     },// Đoạn mã xử lý đầy đủ sẽ trình bày bên dưới
     data() {
         return {
@@ -109,9 +115,19 @@ export default {
                 }
             }
         },
+        // Phương thức mới để xóa contact
+        async deleteContact() {
+            try {
+                await ContactService.delete(this.activeContact._id);
+                this.refreshList();
+            } catch (error) {
+                console.log(error);
+            }
+        },
         goToAddContact() {
             this.$router.push({ name: "contact.add" });
         },
+
     },
     mounted() {
         this.refreshList();

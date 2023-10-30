@@ -27,10 +27,11 @@
             </label>
         </div>
         <div class="form-group">
-            <button class="btn btn-primary">Lưu</button>
-            <button v-if="contactLocal._id" type="button" class="ml-2 btn btn-danger" @click="deleteContact">
+            <button class="btn btn-primary" style="margin-right: 5px;">Lưu</button>
+            <button v-if="contactLocal._id" style="margin-right: 5px;" type="button" class="ml-2 btn btn-danger" @click="deleteContact">
                 Xóa
             </button>
+            <button class="btn btn-info" @click="back" style="margin-right: 5px;">Trở lại</button>
         </div>
     </Form>
 </template>
@@ -79,6 +80,9 @@ export default {
         },
         deleteContact() {
             this.$emit("delete:contact", this.contactLocal.id);
+        },
+        back() {
+            this.$emit("back:contact", this.$router.push({ name: "contactbook" }));
         },
     },
 };

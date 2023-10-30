@@ -2,7 +2,6 @@
     <div class="page">
         <h4>Thêm Liên hệ</h4>
         <ContactForm :contact="contact" @submit:contact="addContact" />
-        <p>{{ message }}</p>
     </div>
 </template>
 <script>
@@ -24,7 +23,9 @@ export default {
         async addContact (data){
             try{
                 await ContactService.create(data);  
-                this.message = "Thêm liên hệ thành công"
+                this.message = "Thêm liên hệ thành công";
+                alert(this.message);
+                this.$router.push({ name: "contactbook" });
             }catch(error){
                 console.log(error);
             }
